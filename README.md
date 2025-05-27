@@ -10,14 +10,49 @@
 | 3 | Local test (vercel dev) passes | 🟡 |
 | 4 | Push to GitHub (pandigita/soeForm1) | ✅ |
 | 5 | Create Vercel project via CLI & link repo | ✅ |
-| 6 | Add env-vars in Vercel dashboard | 🟡 |
+| 6 | Add env-vars in Vercel dashboard | ✅ |
 | 7 | Deploy to prod, get endpoint URL | ✅ |
 | 8 | WordPress form updated & live test passes | 🟡 |
 
-Notes:
-- Production URL: https://soe-form-1-rmej45m58-esuus-projects.vercel.app
-- Waiting for Supabase environment variables to be added
-- GitHub integration pending in Vercel dashboard
+## Current Status:
+- **Production URL**: https://soe-form1-5i1h183gn-esuus-projects.vercel.app
+- **API Endpoint**: https://soe-form1-5i1h183gn-esuus-projects.vercel.app/api/event-lead
+- **GitHub integration**: ✅ Connected
+- **Environment variables**: ✅ Added
+
+## WordPress Form Snippet
+
+```html
+<form id="quick-lead-form">
+  <input name="name" type="text" placeholder="Name" required>
+  <input name="email" type="email" placeholder="Email" required>
+  <select name="participationType" required>
+    <option value="">Choose type…</option>
+    <option value="in-person">In-person</option>
+    <option value="online">Online</option>
+    <option value="other">Other</option>
+  </select>
+  <textarea name="other" placeholder="Other (optional)"></textarea>
+  <button type="submit">Send</button>
+</form>
+<script>
+document.getElementById('quick-lead-form').onsubmit = e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  fetch('https://soe-form1-5i1h183gn-esuus-projects.vercel.app/api/event-lead', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify(data)
+  });
+  window.location = 'https://YOUR-GOOGLE-FORM-URL';
+};
+</script>
+```
+
+## Notes:
+- Need to test API endpoint (currently showing auth page)
+- Replace `https://YOUR-GOOGLE-FORM-URL` with actual Google Form URL
+- Ready for testing once API authentication is resolved
 
 Cursor Project Plan — soeForm1
 
@@ -132,7 +167,7 @@ Cursor prints ready-to-paste snippet (using the deploy URL):
 document.getElementById('quick-lead-form').onsubmit = e => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
-  fetch('https://soeForm1.vercel.app/api/event-lead', {
+  fetch('https://soe-form1-5i1h183gn-esuus-projects.vercel.app/api/event-lead', {
     method: 'POST',
     headers: { 'Content-Type':'application/json' },
     body: JSON.stringify(data)
