@@ -13,6 +13,14 @@ const allowedOrigins = [
   'https://www.entrepreneursummer.com'
 ];
 
+// Function to get current time in Vietnam timezone (UTC+7)
+function getVietnamTime() {
+  const now = new Date();
+  // Convert to Vietnam time (UTC+7)
+  const vietnamTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+  return vietnamTime.toISOString();
+}
+
 export default async function handler(req, res) {
   // Get the origin from the request
   const origin = req.headers.origin;
@@ -37,7 +45,13 @@ export default async function handler(req, res) {
   // Process the POST request
   const { name, email, participationType, other } = req.body;
   await supabase.from('event_leads').insert([
-    { name, email, participation_type: participationType, other: other || null }
+    { 
+      name, 
+      email, 
+      participation_type: participationType, 
+      other: other || null,
+      created_at: getVietnamTime()
+    }
   ]);
   res.status(200).json({ ok: true });
 } 
