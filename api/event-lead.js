@@ -5,8 +5,36 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://hubhoian.com',
+  'https://www.hubhoian.com',
+  'https://entrepreneursummer.com',
+  'https://www.entrepreneursummer.com'
+];
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  // Get the origin from the request
+  const origin = req.headers.origin;
+  
+  // Check if origin is in allowed list
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  // Handle preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(204).end();
+  }
+  
+  // Only allow POST method for actual requests
+  if (req.method !== 'POST') {
+    return res.status(405).end();
+  }
+  
+  // Process the POST request
   const { name, email, participationType, other } = req.body;
   await supabase.from('event_leads').insert([
     { name, email, participation_type: participationType, other: other || null }
