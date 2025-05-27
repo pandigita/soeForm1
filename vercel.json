@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/event-lead.js": {
-      "runtime": "@vercel/node@3"
-    }
-  }
-} 
