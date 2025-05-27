@@ -16,9 +16,19 @@ const allowedOrigins = [
 // Function to get current time in Vietnam timezone (UTC+7)
 function getVietnamTime() {
   const now = new Date();
-  // Convert to Vietnam time (UTC+7)
+  // Get Vietnam time (UTC+7)
   const vietnamTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-  return vietnamTime.toISOString();
+  
+  // Format as YYYY-MM-DD HH:mm:ss.sss+07
+  const year = vietnamTime.getUTCFullYear();
+  const month = String(vietnamTime.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(vietnamTime.getUTCDate()).padStart(2, '0');
+  const hours = String(vietnamTime.getUTCHours()).padStart(2, '0');
+  const minutes = String(vietnamTime.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(vietnamTime.getUTCSeconds()).padStart(2, '0');
+  const milliseconds = String(vietnamTime.getUTCMilliseconds()).padStart(3, '0');
+  
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}+07:00`;
 }
 
 export default async function handler(req, res) {
